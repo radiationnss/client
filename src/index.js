@@ -10,7 +10,7 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 
 
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const clientId = "963076518708-u7b6mdhr18id93r8sdua5caqi8av2g26.apps.googleusercontent.com";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

@@ -28,7 +28,21 @@ const LoginPage = (props) => {
     });
   };
 
-  const googleLogin = async () => {};
+  const googleLogin = useGoogleLogin({
+    clientId: "963076518708-u7b6mdhr18id93r8sdua5caqi8av2g26.apps.googleusercontent.com",
+    onSuccess: async (googleUser) => {
+      // Step 2: Handle successful Google login
+      console.log("Google login successful", googleUser);
+
+      // Additional logic, if needed
+    },
+    onError: (error) => {
+      // Step 3: Handle Google login error
+      console.error("Google login error", error);
+
+      // Additional error handling, if needed
+    },
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
