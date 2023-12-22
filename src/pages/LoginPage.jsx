@@ -1,4 +1,4 @@
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin,GoogleLogin } from '@react-oauth/google';
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Toaster, toast } from "sonner";
@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Divider, Inputbox, Logo } from "../components";
 import { connect } from 'react-redux';
 import { setUser } from '../features/user';
+import { jwtDecode } from "jwt-decode";
 
 
 
@@ -97,7 +98,7 @@ const LoginPage = (props) => {
   return (
     <div className='flex w-full  h-[100vh]'>
       <div className='hidden md:flex flex-col gap-y-4 w-1/3 min-h-screen bg-black items-center justify-center'>
-        <Logo type='sigin' />
+        <Logo type='sign-in' />
         <span className='text-xl font-semibold text-white'>Welcome, back!</span>
       </div>
 
@@ -112,6 +113,21 @@ const LoginPage = (props) => {
                 Sign in to your account
               </h2>
             </div>
+
+            <a href="https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=963076518708-u7b6mdhr18id93r8sdua5caqi8av2g26.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/userinfo.email&redirect_uri=http://127.0.0.1:8000/api/google-oauth2/login/sdk/callback/">
+  <h1>lhsadfl</h1>
+</a>
+
+<GoogleLogin
+  onSuccess={credentialResponse => {
+    var decoded = jwtDecode(credentialResponse.credential)
+    console.log(decoded);
+    console.log(credentialResponse)
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>;
 
             <Button
               onClick={() => googleLogin()}
