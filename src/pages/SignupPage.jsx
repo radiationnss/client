@@ -1,4 +1,4 @@
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin,GoogleLogin } from "@react-oauth/google";
 import React, { useEffect, useState } from "react";
 import { BiImages } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
@@ -6,6 +6,7 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { Button, Divider, Inputbox, Logo } from "../components";
+import { jwtDecode } from "jwt-decode";
 
 const SignupPage = () => {
   //const user = {};
@@ -30,7 +31,38 @@ const SignupPage = () => {
     });
   };
 
-  const googleLogin = async () => {};
+  const googleLogin = async (googleUserData) => {
+    const registrationData = {
+      first_name: googleUserData.given_name,
+      last_name: googleUserData.family_name,
+      email: googleUserData.email,
+      password: googleUserData.sub,
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData),
+      });
+
+      if (response.ok) {
+        // Registration successful
+        console.log('Registration successful');
+        // You can handle additional logic here, such as redirecting to a login page
+        navigate('/sign-in');
+
+      } else {
+        // Registration failed
+        console.error('Registration failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -181,6 +213,17 @@ const SignupPage = () => {
                     icon={<FcGoogle className='text-xl' />}
                     styles='w-full flex flex-row-reverse gap-4 bg-black dark:bg-transparent dark:border text-white px-5 py-2.5 rounded-full'
                   />
+                  <GoogleLogin
+                    onSuccess={credentialResponse => {
+                      var decoded = jwtDecode(credentialResponse.credential)
+                      console.log(decoded);
+                      googleLogin(decoded);
+                      //console.log(credentialResponse)
+                    }}
+                    onError={() => {
+                      console.log('Login Failed');
+                    }}
+                  />;
                   <Divider label='OR' />
 
                   <Button

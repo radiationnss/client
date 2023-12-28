@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { GOOGLE_AUTH_SUCCESS, GOOGLE_AUTH_FAIL } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
@@ -21,6 +22,20 @@ const userSlice = createSlice({
       state.token = action.payload.token;
     },
     resetUser: () => initialState,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(GOOGLE_AUTH_SUCCESS, (state, action) => {
+      // Assuming action.payload contains user and token information
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+    });
+    builder.addCase(GOOGLE_AUTH_FAIL, (state) => {
+      // Handle failure if needed
+      state.isAuthenticated = false;
+      state.user = null;
+      state.token = null;
+    });
   },
 });
 

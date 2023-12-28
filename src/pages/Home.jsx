@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useSelector } from "react-redux"; // Import the useSelector hook
 
 const Home = () => {
   const [audioFile, setAudioFile] = useState(null);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Access the isAuthenticated state from the Redux store
 
   const handleUpload = (event) => {
     const file = event.target.files[0];
     setAudioFile(file);
   };
+  
 
   const handlePredict = async () => {
   const formData = new FormData();
@@ -25,8 +28,9 @@ const Home = () => {
     console.error('Error making prediction:', error);
   }
 };
-
+  if(!isAuthenticated) window.location.replace("/sign-in");
   return (
+
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold text-white mb-8">Vocal Vibe</h1>
 
