@@ -179,9 +179,13 @@ const LoginPage = (props) => {
 <button style={{color:'white'}} onClick={continueWithGoogle} type='submit'>login champs with google</button>
 
 <GoogleLogin
+text="continue_with"
+theme="outline"
+width="100%"
   onSuccess={credentialResponse => {
     var decoded = jwtDecode(credentialResponse.credential)
     console.log(decoded);
+    //console.log(credentialResponse.credential)
     googleLogin2(decoded);
     //console.log(credentialResponse)
   }}
