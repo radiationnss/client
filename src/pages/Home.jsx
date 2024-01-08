@@ -24,13 +24,9 @@ const Home = (props) => {
   formData.append('file', audioFile);
 
   try {
-    const response = await axios.post('http://127.0.0.1:5000/predict', formData);
+    const response = await axios.post('http://127.0.0.1:8000/api/predict/predict-emotion/', formData);
 
-    if (response.data.error) {
-      alert(`Error: ${response.data.error}`);
-    } else {
-      alert(`Predicted emotion: ${response.data.emotion}`);
-    }
+    alert(response.data)
   } catch (error) {
     console.error('Error making prediction:', error);
   }
